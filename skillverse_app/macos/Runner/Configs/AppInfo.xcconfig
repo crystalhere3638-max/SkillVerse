@@ -1,0 +1,4 @@
+// Application-level settings for the Runner target.
+PRODUCT_NAME = skillverse_app
+PRODUCT_BUNDLE_IDENTIFIER = com.skillverse.app
+PRODUCT_COPYRIGHT = Copyright © 2026 SkillVerse. All rights reserved.

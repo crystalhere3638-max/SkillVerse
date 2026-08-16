@@ -1,0 +1,53 @@
+rules_version = '2';
+
+// SkillVerse — Firebase Storage Security Rules
+//
+// Structure:
+//   profile_images/{uid}.jpg        — one file per user, overwritten on re-upload
+//   posts/{uid}/{fileId}.jpg|mp4    — post media, one folder per author
+//   videos/{uid}/{fileId}.mp4       — video uploads, one folder per author
+//
+// Every path is namespaced under the uploading user's own uid, and
+// every write rule checks that {uid} in the path matches
+// request.auth.uid — so nobody can write into (or overwrite) another
+// user's folder. Reads are open to any signed-in user since this is a
+// social feed — everyone's posts/videos/avatars are meant to be seen.
+
+function isSignedIn() {
+  return request.auth != null;
+}
+
+function isOwner(uid) {
+  return isSignedIn() && request.auth.uid == uid;
+}
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /profile_images/{uid}.jpg {
+      allow read: if isSignedIn();
+      allow write: if isOwner(uid)
+                   && request.resource.size < 5 * 1024 * 1024 // 5MB
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    match /posts/{uid}/{fileId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(uid)
+                   && request.resource.size < 50 * 1024 * 1024 // 50MB — covers both image and short video posts
+                   && (request.resource.contentType.matches('image/.*') || request.resource.contentType.matches('video/.*'));
+    }
+
+    match /videos/{uid}/{fileId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(uid)
+                   && request.resource.size < 200 * 1024 * 1024 // 200MB
+                   && request.resource.contentType.matches('video/.*');
+    }
+
+    // Default deny for anything not explicitly matched above.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
