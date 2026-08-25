@@ -1,4 +1,4 @@
-sed -n '1,50p' /workspaces/SkillVerse/skillverse_app/lib/presentation/screens/home/home_screen.dart
+import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
