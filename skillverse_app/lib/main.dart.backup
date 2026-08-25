@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'presentation/screens/home/home_shell.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
-import 'data/repositories/auth_repository.dart';
 import 'providers/auth_provider.dart';
 import 'providers/badge_provider.dart';
 import 'providers/competition_provider.dart';
@@ -25,14 +22,6 @@ Future<void> main() async {
   // Requires `flutterfire configure` to have generated a real
   // firebase_options.dart for your project — see that file's header.
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  if (FirebaseAuth.instance.currentUser == null) {
-    try {
-      await AuthRepository().signInAnonymously();
-    } catch (_) {
-      // Non-fatal: feed/UI will still show empty/error states gracefully.
-    }
-  }
 
   runApp(const SkillVerseApp());
 }
@@ -63,7 +52,7 @@ class SkillVerseApp extends StatelessWidget {
         theme: AppTheme.dark,
         darkTheme: AppTheme.dark,
         themeMode: ThemeMode.dark,
-      home: const HomeShell(),
+        home: const AuthGate(),
       ),
     );
   }

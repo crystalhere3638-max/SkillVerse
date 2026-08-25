@@ -114,6 +114,31 @@ class AuthRepository {
     }
   }
 
+  /// Signs in anonymously so guests can browse and post during testing.
+  /// Creates a lightweight Firestore user document the first time this
+  /// anonymous UID is seen.
+  Future<AppUser> signInAnonymously() async {
+    try {
+      final credential = await _authService.signInAnonymously();
+      final uid = credential.user!.uid;
+      final existing = await _userService.getUser(uid);
+      if (existing != null) {
+        await _userService.updateLastLogin(uid);
+        return existing;
+      }
+      final newUser = AppUser.newFromAuth(
+        uid: uid,
+        username: 'Guest',
+        email: '',
+        photoUrl: null,
+      );
+      await _userService.createUser(newUser);
+      return newUser;
+    } catch (e) {
+      throw AuthExceptionMapper.map(e);
+    }
+  }
+
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _authService.sendPasswordResetEmail(email);

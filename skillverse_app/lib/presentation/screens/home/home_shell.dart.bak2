@@ -1,4 +1,3 @@
-sed -n '1,50p' /workspaces/SkillVerse/skillverse_app/lib/presentation/screens/home/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
@@ -151,7 +150,7 @@ class _BottomNav extends StatelessWidget {
             final (icon, label) = _items[i];
             final active = i == index;
             if (i == 2) {
-              return Expanded(child: GestureDetector(
+              return GestureDetector(
                 onTap: () => onTap(i),
                 child: Container(
                   width: 52,
@@ -164,9 +163,9 @@ class _BottomNav extends StatelessWidget {
                   ),
                   child: Icon(icon, color: Colors.black, size: 26),
                 ),
-              ));
+              );
             }
-            return Expanded(child: GestureDetector(
+            return GestureDetector(
               onTap: () => onTap(i),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
@@ -180,7 +179,7 @@ class _BottomNav extends StatelessWidget {
                   children: [
                     Icon(icon, size: 20, color: active ? AppColors.primary : AppColors.textMuted),
                     const SizedBox(height: 3),
-                    Text(label, maxLines: 1, overflow: TextOverflow.ellipsis,
+                    Text(label,
                         style: TextStyle(
                           fontSize: 9.5,
                           fontWeight: active ? FontWeight.w700 : FontWeight.w400,
@@ -189,7 +188,7 @@ class _BottomNav extends StatelessWidget {
                   ],
                 ),
               ),
-            ));
+            );
           }),
         ),
       ),
