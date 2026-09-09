@@ -1,0 +1,32 @@
+[debug] [2026-09-08T07:08:52.678Z] ----------------------------------------------------------------------
+[debug] [2026-09-08T07:08:52.680Z] Command:       /usr/local/share/nvm/versions/node/v24.14.0/bin/node /home/codespace/nvm/current/bin/firebase login --no-localhost
+[debug] [2026-09-08T07:08:52.681Z] CLI Version:   15.29.0
+[debug] [2026-09-08T07:08:52.681Z] Platform:      linux
+[debug] [2026-09-08T07:08:52.681Z] Node Version:  v24.14.0
+[debug] [2026-09-08T07:08:52.681Z] Detected Agent: unknown
+[debug] [2026-09-08T07:08:52.681Z] Time:          Tue Sep 08 2026 07:08:52 GMT+0000 (Coordinated Universal Time)
+[debug] [2026-09-08T07:08:52.681Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-09-08T07:08:52.696Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] i  The Firebase CLI’s MCP server feature can optionally make use of Gemini in Firebase. Learn more about Gemini in Firebase and how it uses your data: https://firebase.google.com/docs/gemini-in-firebase#how-gemini-in-firebase-uses-your-data 
+[debug] [2026-09-08T07:08:53.219Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-09-08T07:08:53.219Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] 
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you. 
+[debug] [2026-09-08T07:10:20.612Z] >>> [apiv2][query] POST https://auth.firebase.tools/attest [none]
+[debug] [2026-09-08T07:10:20.612Z] >>> [apiv2][body] POST https://auth.firebase.tools/attest {"session_id":"fde6e5a4-b97a-496f-9bf2-afe843bfedc7"}
+[debug] [2026-09-08T07:10:20.989Z] <<< [apiv2][status] POST https://auth.firebase.tools/attest 200
+[debug] [2026-09-08T07:10:20.989Z] <<< [apiv2][body] POST https://auth.firebase.tools/attest {"token":"cxkeFZb-eABshjSWaJn4t4hCTaV0v8kJ2AMWihVFI1g"}
+[info] 
+[info] To sign in to the Firebase CLI:
+[info] 
+[info] 1. Take note of your session ID:
+[info] 
+[info]    FDE6E
+[info] 
+[info] 2. Visit the URL below on any device and follow the instructions to get your code:
+[info] 
+[info]    https://auth.firebase.tools/login?code_challenge=dTR2qUC_eTC8pB5Fu87yPPIeHJfUDP2lsVctlvR4g-4&session=fde6e5a4-b97a-496f-9bf2-afe843bfedc7&attest=cxkeFZb-eABshjSWaJn4t4hCTaV0v8kJ2AMWihVFI1g
+[info] 
+[info] 3. Paste or enter the authorization code below once you have it:
+[info] 

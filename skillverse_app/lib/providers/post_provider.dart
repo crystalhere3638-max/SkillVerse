@@ -94,8 +94,8 @@ class PostProvider extends ChangeNotifier {
 
     _feedSub = _repository.watchFeed(_repository.currentUid).listen(
       _onFeedUpdate,
-      onError: (_) {
-        _error = "We couldn't load your feed. Check your connection and try again.";
+      onError: (e) {
+        _error = "REAL ERROR: $e";
         _initialLoading = false;
         notifyListeners();
       },

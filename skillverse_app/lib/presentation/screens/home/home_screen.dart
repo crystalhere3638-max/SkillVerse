@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       WidgetsBinding.instance.addPostFrameCallback((_) => context.read<PostProvider>().init());
     }
 
-    return RefreshIndicator(
+      return Stack(children: [Container(color: Colors.blue), RefreshIndicator(
       color: AppColors.primary,
       backgroundColor: AppColors.surfaceElevated,
       onRefresh: () => context.read<PostProvider>().refresh(),
@@ -85,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // enough not to naturally overscroll.
         physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
         slivers: [
+            const SliverToBoxAdapter(child: SizedBox(height: 200, child: ColoredBox(color: Colors.yellow, child: Center(child: Text('TEST SLIVER', style: TextStyle(fontSize: 24, color: Colors.black)))))), 
           const SliverToBoxAdapter(child: OfflineBanner()),
           SliverToBoxAdapter(
             child: _Header(username: username, profile: profile),
@@ -111,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
-    );
+      ), Positioned(top: 90, left: 10, child: Container(color: Colors.red, padding: const EdgeInsets.all(8), child: Text('loading=${postProvider.isInitialLoading} err=${postProvider.error} items=${postProvider.feedItems.length}', style: const TextStyle(color: Colors.white, fontSize: 12))))]);
   }
 
   Widget _buildFeedSliver(PostProvider postProvider) {
