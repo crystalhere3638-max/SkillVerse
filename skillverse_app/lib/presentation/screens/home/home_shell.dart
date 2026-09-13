@@ -88,7 +88,7 @@ class _HomeShellState extends State<HomeShell> {
     return Scaffold(
       backgroundColor: AppColors.bg,
       extendBody: true,
-      body: SafeArea(bottom: false, child: Stack(children: [_body(), Positioned(top: 40, left: 10, child: Container(color: Colors.red, padding: const EdgeInsets.all(8), child: Text('index=$_index tab=${_tabs[_index]}', style: const TextStyle(color: Colors.white))))])),
+      body: SafeArea(bottom: false, child: _body()),
       bottomNavigationBar: _BottomNav(
         index: _index,
         onTap: _onTabTap,
