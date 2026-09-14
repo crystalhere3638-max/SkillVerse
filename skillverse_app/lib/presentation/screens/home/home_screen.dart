@@ -64,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    try {
     final auth = context.watch<AuthProvider>();
     final userProvider = context.watch<UserProvider>();
     final postProvider = context.watch<PostProvider>();
@@ -115,6 +116,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
         );
       
+  } catch (e, st) {
+      return Center(child: Text('HOME ERROR: $e', style: const TextStyle(color: Colors.red, fontSize: 12)));
+    }
   }
 
   Widget _buildFeedSliver(PostProvider postProvider) {
