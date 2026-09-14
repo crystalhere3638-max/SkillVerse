@@ -56,7 +56,7 @@ class _HomeShellState extends State<HomeShell> {
   Widget _body() {
     switch (_tabs[_index]) {
       case 'home':
-        return const HomeScreen();
+        return Container(color: Colors.purple);
       case 'compete':
         return const CompetitionHubScreen();
       case 'create':
