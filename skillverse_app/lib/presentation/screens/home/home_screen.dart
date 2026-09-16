@@ -88,8 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
         slivers: [
       const SliverToBoxAdapter(child: SizedBox(height: 150, child: ColoredBox(color: Colors.orange, child: Center(child: Text('TEST', style: TextStyle(fontSize: 30, color: Colors.black)))))),
             
-          /*const SliverToBoxAdapter(child: OfflineBanner()),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(child: OfflineBanner()),
+          /*SliverToBoxAdapter(
             child: _Header(username: username, profile: profile),
           ),
           SliverToBoxAdapter(
