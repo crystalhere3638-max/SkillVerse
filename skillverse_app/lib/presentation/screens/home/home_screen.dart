@@ -65,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     try {
+      return Container(color: Colors.orange, child: const Center(child: Text('HOME BUILD REACHED', style: TextStyle(color: Colors.black, fontSize: 24))));
     final auth = context.watch<AuthProvider>();
     final userProvider = context.watch<UserProvider>();
     final postProvider = context.watch<PostProvider>();
