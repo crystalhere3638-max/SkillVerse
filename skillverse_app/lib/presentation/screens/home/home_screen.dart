@@ -286,7 +286,7 @@ class _Header extends StatelessWidget {
               const SizedBox(width: 8),
               Consumer<LeaderboardProvider>(
                 builder: (_, lb, __) {
-                  final rank = lb.entries.firstWhere((e) => e.isCurrentUser, orElse: () => lb.entries.last).rank;
+                  final rank = lb.entries.isEmpty ? 0 : lb.entries.firstWhere((e) => e.isCurrentUser, orElse: () => lb.entries.last).rank;
                   return _StatChip(icon: Icons.leaderboard_rounded, value: '#$rank', label: 'Rank', color: AppColors.blue);
                 },
               ),
