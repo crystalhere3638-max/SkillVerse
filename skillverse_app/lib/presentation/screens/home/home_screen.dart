@@ -89,9 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
       const SliverToBoxAdapter(child: SizedBox(height: 150, child: ColoredBox(color: Colors.orange, child: Center(child: Text('TEST', style: TextStyle(fontSize: 30, color: Colors.black)))))),
             
           const SliverToBoxAdapter(child: OfflineBanner()),
-          /*SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: _Header(username: username, profile: profile),
-          ),
+          ),/*
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 22, 20, 10),
