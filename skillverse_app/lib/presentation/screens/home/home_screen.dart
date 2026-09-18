@@ -276,6 +276,11 @@ class _Header extends StatelessWidget {
               ),
             ],
           ),
+          ],
+            ),
+      ],
+    ),
+  );
           /*const SizedBox(height: 16),
           Row(
             children: [
