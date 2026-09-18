@@ -218,7 +218,7 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return const SizedBox(height: 50, child: ColoredBox(color: Colors.pink)); /* 
+   return const SizedBox(height: 50, child: ColoredBox(color: Colors.pink)); 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
       child: Column(
@@ -276,7 +276,7 @@ class _Header extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          /*const SizedBox(height: 16),
           Row(
             children: [
               _StatChip(icon: Icons.bolt_rounded, value: '${profile?.xp ?? 0}', label: 'XP', color: AppColors.primary),
