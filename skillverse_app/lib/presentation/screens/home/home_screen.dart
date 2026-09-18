@@ -278,7 +278,7 @@ class _Header extends StatelessWidget {
           ], 
         ),
   );
-          /*const SizedBox(height: 16),
+          const SizedBox(height: 16),
           Row(
             children: [
               _StatChip(icon: Icons.bolt_rounded, value: '${profile?.xp ?? 0}', label: 'XP', color: AppColors.primary),
@@ -294,7 +294,7 @@ class _Header extends StatelessWidget {
                 },
               ),
             ],
-          ),
+          ),/*
           const SizedBox(height: 12),
           _XpProgressBar(level: profile?.level ?? 1),
           const SizedBox(height: 12),
