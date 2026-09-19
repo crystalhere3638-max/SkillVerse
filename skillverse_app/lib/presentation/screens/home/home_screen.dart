@@ -421,7 +421,7 @@ class _TodayMissionAndCompeteRow extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800, color: Colors.black),
                   ),
-                  const Spacer(),
+                  const SizedBox(height: 8),
                   if (featured != null)
                     Text(featured.joined ? 'Joined ✓' : 'Tap to join →', style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: Colors.black87)),
                 ],
