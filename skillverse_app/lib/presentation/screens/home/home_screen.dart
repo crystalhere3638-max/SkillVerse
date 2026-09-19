@@ -292,11 +292,11 @@ class _Header extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 12),
+          _XpProgressBar(level: profile?.level ?? 1),
           ],
 ),
 );/*
-          const SizedBox(height: 12),
-          _XpProgressBar(level: profile?.level ?? 1),
           const SizedBox(height: 12),
           const _TodayMissionAndCompeteRow(),
           if (profile?.mainCategory != null) ...[
