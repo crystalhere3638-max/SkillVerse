@@ -275,9 +275,6 @@ class _Header extends StatelessWidget {
               ),
             ],
           ),
-          ], 
-        ),
-  );
           const SizedBox(height: 16),
           Row(
             children: [
@@ -294,7 +291,10 @@ class _Header extends StatelessWidget {
                 },
               ),
             ],
-          ),/*
+          ),
+          ],
+),
+);/*
           const SizedBox(height: 12),
           _XpProgressBar(level: profile?.level ?? 1),
           const SizedBox(height: 12),
