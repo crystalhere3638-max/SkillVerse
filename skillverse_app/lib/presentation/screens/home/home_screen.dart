@@ -340,7 +340,7 @@ class _TodayMissionAndCompeteRow extends StatelessWidget {
     final featured = context.watch<CompetitionProvider>().featured;
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: PressableScale(
