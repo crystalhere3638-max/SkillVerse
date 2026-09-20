@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SliverToBoxAdapter(child: OfflineBanner()),
           SliverToBoxAdapter(
             child: _Header(username: username, profile: profile),
-          ),/*
+          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 22, 20, 10),
@@ -111,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           _buildFeedSliver(postProvider),
-          const SliverToBoxAdapter(child: SizedBox(height: 100)),*/
+          const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
         );
