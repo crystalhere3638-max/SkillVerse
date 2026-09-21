@@ -3,6 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 /// Thrown after every retry attempt has been exhausted, so callers can
 /// show a real error instead of hanging on a stuck progress bar.
@@ -57,18 +59,18 @@ class StorageUploadService {
     Object? lastError;
     for (var attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
-        final ref = _storage.ref(storagePath);
-        final task = ref.putFile(file);
-
-        task.snapshotEvents.listen((snapshot) {
-          if (snapshot.totalBytes > 0) {
-            onProgress(snapshot.bytesTransferred / snapshot.totalBytes);
-          }
-        });
-
-        await task;
-        onProgress(1);
-        return await ref.getDownloadURL();
+        final uri = Uri.parse('https://api.cloudinary.com/v1_1/vbff2dy9/auto/upload');
+final request = http.MultipartRequest('POST', uri)
+  ..fields['upload_preset'] = 'skillverse_unsigned'
+  ..files.add(await http.MultipartFile.fromPath('file', file.path));
+onProgress(0.1);
+final streamed = await request.send();
+final body = await streamed.stream.bytesToString();
+if (streamed.statusCode != 200) {
+  throw Exception('Cloudinary ${streamed.statusCode}: $body');
+}
+onProgress(1);
+return jsonDecode(body)['secure_url'] as String;
       } catch (e) {
         lastError = e;
         if (attempt < maxAttempts) {
