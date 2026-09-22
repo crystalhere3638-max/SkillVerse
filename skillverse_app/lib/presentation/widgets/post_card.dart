@@ -48,7 +48,7 @@ class PostCard extends StatelessWidget {
                   );
                 },
               ),
-              _sheetOption(sheetCtx, Icons.share_outlined, 'Share', () => ShareSheet.show(context)),
+              _sheetOption(sheetCtx, Icons.share_outlined, 'Share', () => _shareService.sharePost(post)
               _sheetOption(sheetCtx, Icons.flag_outlined, 'Report', () => ReportSheet.show(context, post.id), danger: true),
               _sheetOption(sheetCtx, Icons.link, 'Copy Link', () => _copyLink(context)),
             ],
@@ -205,7 +205,7 @@ class PostCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 18),
                   _ActionTap(
-                    onTap: () => ShareSheet.show(context),
+                    onTap: () => _shareService.sharePost(post), 
                     child: const Row(
                       children: [
                         Icon(Icons.share_outlined, size: 15, color: AppColors.textSecondary),
