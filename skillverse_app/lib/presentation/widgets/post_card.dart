@@ -48,7 +48,7 @@ class PostCard extends StatelessWidget {
                   );
                 },
               ),
-              _sheetOption(sheetCtx, Icons.share_outlined, 'Share', () => _shareService.sharePost(post)
+              _sheetOption(sheetCtx, Icons.share_outlined, 'Share', () => _shareService.sharePost(post)),
               _sheetOption(sheetCtx, Icons.flag_outlined, 'Report', () => ReportSheet.show(context, post.id), danger: true),
               _sheetOption(sheetCtx, Icons.link, 'Copy Link', () => _copyLink(context)),
             ],
