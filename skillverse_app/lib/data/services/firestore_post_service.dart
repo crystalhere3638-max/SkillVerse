@@ -49,6 +49,24 @@ class FirestorePostService {
     final doc = await _posts.add({...data, 'createdAt': FieldValue.serverTimestamp()});
     return doc.id;
   }
+  Future<void> deletePost(String postId) async {
+    await _posts.doc(postId).delete();
+
+    final likeDocs = await _likes.where('postId', isEqualTo: postId).get();
+    for (final doc in likeDocs.docs) {
+      await doc.reference.delete();
+    }
+
+    final saveDocs = await _saves.where('postId', isEqualTo: postId).get();
+    for (final doc in saveDocs.docs) {
+      await doc.reference.delete();
+    }
+
+    final commentDocs = await _comments.where('postId', isEqualTo: postId).get();
+    for (final doc in commentDocs.docs) {
+      await doc.reference.delete();
+    }
+  }
 
   // ---------------- Likes ----------------
 
