@@ -83,12 +83,25 @@ import 'video/feed_video_player.dart';
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.pop(dialogCtx);
-              context.read<FirestorePostService>().deletePost(postId);
-            },
-            child: const Text('Delete', style: TextStyle(color: AppColors.error)),
-          ),
+                onPressed: () async {
+                  Navigator.pop(dialogCtx);
+                  try {
+                    await context.read<FirestorePostService>().deletePost(postId);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Post deleted')),
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Delete failed: $e')),
+                      );
+                    }
+                  }
+                },
+                child: const Text('Delete', style: TextStyle(color: AppColors.error)),
+              ),
         ],
       ),
     );
