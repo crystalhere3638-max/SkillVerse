@@ -95,7 +95,7 @@ import 'video/feed_video_player.dart';
                   } catch (e) {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Delete failed: $e')),
+                        SnackBar(content: Text('Delete failed: $e | myUid=${FirebaseAuth.instance.currentUser?.uid}')),
                       );
                     }
                   }
