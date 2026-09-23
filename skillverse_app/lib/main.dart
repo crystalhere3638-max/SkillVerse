@@ -18,6 +18,7 @@ import 'providers/post_provider.dart';
 import 'providers/settings_provider.dart';
 import 'providers/user_provider.dart';
 import 'providers/video_provider.dart';
+import 'data/services/firestore_post_service.dart';
 import 'presentation/screens/auth/auth_gate.dart';
 
 
@@ -99,6 +100,7 @@ class SkillVerseApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => app_auth.AuthProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        Provider<FirestorePostService>(create: (_) => FirestorePostService()),
         ChangeNotifierProvider(create: (_) => PostProvider()),
         ChangeNotifierProvider(create: (_) => VideoProvider()),
         // Gamification — local mock data for Beta V1; swap for
