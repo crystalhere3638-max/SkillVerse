@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -10,17 +11,19 @@ import '../../core/utils/media_source.dart';
 import '../../core/utils/time_ago.dart';
 import '../../data/models/post_model.dart';
 import '../../providers/post_provider.dart';
+import '../../data/services/firestore_post_service.dart';
 import 'comment_sheet.dart';
 import 'double_tap_like.dart';
 import 'report_sheet.dart';
 import 'share_sheet.dart';
 import 'video/feed_video_player.dart';
 
-class PostCard extends StatelessWidget {
+ class PostCard extends StatelessWidget {
   final Post post;
   const PostCard({super.key, required this.post});
 
-  static final _shareService = ShareService();
+  static  final _shareService = ShareService();
+  String? get _currentUid => FirebaseAuth.instance.currentUser?.uid;
 
   void _showMoreSheet(BuildContext context) {
     showModalBottomSheet(
@@ -51,6 +54,9 @@ class PostCard extends StatelessWidget {
               _sheetOption(sheetCtx, Icons.share_outlined, 'Share', () => _shareService.sharePost(post)),
               _sheetOption(sheetCtx, Icons.flag_outlined, 'Report', () => ReportSheet.show(context, post.id), danger: true),
               _sheetOption(sheetCtx, Icons.link, 'Copy Link', () => _copyLink(context)),
+              if (post.authorId == _currentUid)
+                _sheetOption(sheetCtx, Icons.delete_outline, 'Delete Post',
+                    () => _confirmDelete(context, post.id), danger: true),
             ],
           ),
         ),
@@ -65,6 +71,28 @@ class PostCard extends StatelessWidget {
       ..hideCurrentSnackBar()
       ..showSnackBar(const SnackBar(content: Text('Link copied to clipboard'), duration: Duration(seconds: 2)));
   }
+   void _confirmDelete(BuildContext context, String postId) {
+    showDialog(
+      context: context,
+      builder: (dialogCtx) => AlertDialog(
+        title: const Text('Delete post?'),
+        content: const Text('This can\'t be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogCtx),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(dialogCtx);
+              context.read<FirestorePostService>().deletePost(postId);
+            },
+            child: const Text('Delete', style: TextStyle(color: AppColors.error)),
+          ),
+        ],
+      ),
+    );
+   }
 
   Widget _sheetOption(BuildContext context, IconData icon, String label, VoidCallback onTap, {bool danger = false}) {
     final color = danger ? AppColors.error : Colors.white;
