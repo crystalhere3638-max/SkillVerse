@@ -54,17 +54,23 @@ class FirestorePostService {
 
     final likeDocs = await _likes.where('postId', isEqualTo: postId).get();
     for (final doc in likeDocs.docs) {
-      await doc.reference.delete();
+      try {
+        await doc.reference.delete();
+      } catch (_) {}
     }
 
     final saveDocs = await _saves.where('postId', isEqualTo: postId).get();
     for (final doc in saveDocs.docs) {
-      await doc.reference.delete();
+      try {
+        await doc.reference.delete();
+      } catch (_) {}
     }
 
     final commentDocs = await _comments.where('postId', isEqualTo: postId).get();
     for (final doc in commentDocs.docs) {
-      await doc.reference.delete();
+      try {
+        await doc.reference.delete();
+      } catch (_) {}
     }
   }
 
