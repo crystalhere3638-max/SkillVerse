@@ -52,6 +52,11 @@ class FirestorePostService {
   Future<void> deletePost(String postId) async {
     await _posts.doc(postId).delete();
 
+    // Cleanup runs in the background — don't block the UI for it.
+    _cleanupPostData(postId);
+  }
+
+  void _cleanupPostData(String postId) async {
     final likeDocs = await _likes.where('postId', isEqualTo: postId).get();
     for (final doc in likeDocs.docs) {
       try {
