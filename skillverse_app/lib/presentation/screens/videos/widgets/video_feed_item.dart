@@ -163,7 +163,7 @@ class _VideoFeedItemState extends State<VideoFeedItem> {
           Positioned(
             left: 0,
             right: 72,
-            bottom: 0,
+            bottom: 70,
             child: Container(
               padding: const EdgeInsets.fromLTRB(16, 60, 12, 22),
               decoration: const BoxDecoration(
@@ -239,7 +239,7 @@ class _VideoFeedItemState extends State<VideoFeedItem> {
           // Right action rail.
           Positioned(
             right: 8,
-            bottom: 26,
+            bottom: 100,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
