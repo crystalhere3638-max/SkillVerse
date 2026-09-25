@@ -61,6 +61,11 @@ class VideoProvider extends ChangeNotifier {
     _videos = [];
     await init();
   }
+  Future<void> deleteVideo(String videoId) async {
+    _videos = _videos.where((v) => v.id != videoId).toList();
+    notifyListeners();
+    await _repository.persist(_videos);
+  }
 
   void setActiveIndex(int index) {
     if (_activeIndex == index) return;
