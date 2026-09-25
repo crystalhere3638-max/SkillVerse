@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_compress/video_compress.dart';
 
 import '../../../core/constants/post_categories.dart';
 import '../../../core/theme/app_colors.dart';
@@ -69,11 +70,23 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
         context.read<UserProvider>().profile?.username ?? context.read<AuthProvider>().user?.username ?? 'You';
 
     try {
+      String uploadPath = _videoPath!;
+      try {
+        final info = await VideoCompress.compressVideo(
+          _videoPath!,
+          quality: VideoQuality.Res1280x720Quality,
+          deleteOrigin: false,
+        );
+        if (info?.path != null) uploadPath = info!.path!;
+      } catch (_) {
+        // Compression failed — fall back to uploading the original file.
+      }
+
       await context.read<VideoProvider>().publish(
             authorName: username,
             category: _category!,
             caption: _captionCtrl.text,
-            videoPath: _videoPath!,
+            videoPath: uploadPath,
           );
       if (!mounted) return;
       setState(() => _showSuccess = true);
