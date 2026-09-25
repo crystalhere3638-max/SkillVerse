@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
@@ -110,6 +111,28 @@ class _VideoFeedItemState extends State<VideoFeedItem> {
     final c = _controller;
     setState(() => _muted = !_muted);
     c?.setVolume(_muted ? 0 : 1);
+  }
+  void _confirmDelete(BuildContext context, String videoId) {
+    showDialog(
+      context: context,
+      builder: (dialogCtx) => AlertDialog(
+        title: const Text('Delete video?'),
+        content: const Text('This can\'t be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogCtx),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(dialogCtx);
+              context.read<VideoProvider>().deleteVideo(videoId);
+            },
+            child: const Text('Delete', style: TextStyle(color: AppColors.error)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -275,6 +298,15 @@ class _VideoFeedItemState extends State<VideoFeedItem> {
                   label: _compact(video.views),
                   onTap: null,
                 ),
+                if (video.authorId == FirebaseAuth.instance.currentUser?.uid) ...[
+                  const SizedBox(height: 18),
+                  _ActionButton(
+                    icon: Icons.delete_outline_rounded,
+                    color: AppColors.error,
+                    label: 'Delete',
+                    onTap: () => _confirmDelete(context, video.id),
+                  ),
+                ],
                 if (ready) ...[
                   const SizedBox(height: 18),
                   _ActionButton(
