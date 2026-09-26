@@ -56,8 +56,13 @@ class StorageUploadService {
     required String storagePath,
     required void Function(double progress) onProgress,
     int maxAttempts = 3,
+    CancelToken? cancelToken,
   }) async {
-    final dio = Dio();
+    final dio = Dio(BaseOptions(
+      connectTimeout: const Duration(seconds: 30),
+      sendTimeout: const Duration(minutes: 5),
+      receiveTimeout: const Duration(minutes: 2),
+    ));
     Object? lastError;
     for (var attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
@@ -71,6 +76,7 @@ class StorageUploadService {
           onSendProgress: (sent, total) {
             if (total > 0) onProgress(sent / total);
           },
+          cancelToken: cancelToken,
         );
         if (response.statusCode != 200) {
           throw Exception('Cloudinary ${response.statusCode}: ${response.data}');
