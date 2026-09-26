@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
@@ -59,6 +60,7 @@ class VideoRepository {
     required String caption,
     required String localVideoPath,
     required void Function(double progress) onProgress,
+    CancelToken? cancelToken,
     String? competitionBadge,
   }) async {
     final id = _uuid.v4();
@@ -68,6 +70,7 @@ class VideoRepository {
       file: File(localVideoPath),
       storagePath: storagePath,
       onProgress: onProgress,
+      cancelToken: cancelToken,
     );
 
     final video = VideoPost(
