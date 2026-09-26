@@ -5,6 +5,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 /// Thrown after every retry attempt has been exhausted, so callers can
 /// show a real error instead of hanging on a stuck progress bar.
@@ -56,21 +57,25 @@ class StorageUploadService {
     required void Function(double progress) onProgress,
     int maxAttempts = 3,
   }) async {
+    final dio = Dio();
     Object? lastError;
     for (var attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
-        final uri = Uri.parse('https://api.cloudinary.com/v1_1/vbff2dy9/auto/upload');
-final request = http.MultipartRequest('POST', uri)
-  ..fields['upload_preset'] = 'skillverse_unsigned'
-  ..files.add(await http.MultipartFile.fromPath('file', file.path));
-onProgress(0.1);
-final streamed = await request.send();
-final body = await streamed.stream.bytesToString();
-if (streamed.statusCode != 200) {
-  throw Exception('Cloudinary ${streamed.statusCode}: $body');
-}
-onProgress(1);
-return jsonDecode(body)['secure_url'] as String;
+        final formData = FormData.fromMap({
+          'upload_preset': 'skillverse_unsigned',
+          'file': await MultipartFile.fromFile(file.path),
+        });
+        final response = await dio.post(
+          'https://api.cloudinary.com/v1_1/vbff2dy9/auto/upload',
+          data: formData,
+          onSendProgress: (sent, total) {
+            if (total > 0) onProgress(sent / total);
+          },
+        );
+        if (response.statusCode != 200) {
+          throw Exception('Cloudinary ${response.statusCode}: ${response.data}');
+        }
+        return response.data['secure_url'] as String;
       } catch (e) {
         lastError = e;
         if (attempt < maxAttempts) {
