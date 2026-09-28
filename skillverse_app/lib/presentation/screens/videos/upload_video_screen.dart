@@ -90,9 +90,9 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
           );
       if (!mounted) return;
       setState(() => _showSuccess = true);
-    } catch (_) {
+    } catch (e) {
       if (!mounted) return;
-      AppSnackbar.error(context, "Couldn't publish your video. Please try again.");
+      AppSnackbar.error(context, "Publish failed: $e");
     }
   }
 
