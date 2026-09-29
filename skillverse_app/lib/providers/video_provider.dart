@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../data/models/comment_model.dart';
 import '../data/models/video_post_model.dart';
@@ -14,6 +15,7 @@ class VideoProvider extends ChangeNotifier {
   String? _error;
 
   bool _publishing = false;
+  CancelToken? _uploadCancelToken;
   double _uploadProgress = 0;
 
   /// Index of the video currently centered in the vertical PageView.
@@ -66,6 +68,9 @@ class VideoProvider extends ChangeNotifier {
     notifyListeners();
     await _repository.persist(_videos);
   }
+  void cancelPublish() {
+    _uploadCancelToken?.cancel();
+  }
 
   void setActiveIndex(int index) {
     if (_activeIndex == index) return;
@@ -92,7 +97,7 @@ class VideoProvider extends ChangeNotifier {
   /// metadata write, then added to the local feed — see
   /// [VideoRepository.publishVideo] for the full breakdown of what's
   /// real vs. still local in this pipeline.
-  Future<VideoPost> publish({
+  Future<VideoPost?> publish({
     required String authorName,
     required String category,
     required String caption,
@@ -101,6 +106,7 @@ class VideoProvider extends ChangeNotifier {
     _publishing = true;
     _uploadProgress = 0;
     _error = null;
+    _uploadCancelToken = CancelToken();
     notifyListeners();
 
     try {
@@ -114,14 +120,18 @@ class VideoProvider extends ChangeNotifier {
           _uploadProgress = p;
           notifyListeners();
         },
+        cancelToken: _uploadCancelToken,
       );
 
       _videos = [video, ..._videos];
       await _repository.persist(_videos);
       return video;
     } catch (e) {
-      _error = "Couldn't upload your video. Check your connection and try again.";
-      rethrow;
+        if (e is DioException && CancelToken.isCancel(e)) {
+          return null;
+        }
+        _error = "Couldn't upload your video. Check your connection and try again.";
+        rethrow;
     } finally {
       _publishing = false;
       _uploadProgress = 0;
