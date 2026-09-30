@@ -107,9 +107,14 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
         backgroundColor: AppColors.bg,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close_rounded, color: Colors.white),
-          onPressed: provider.isPublishing ? null : () => Navigator.of(context).pop(),
-        ),
+            icon: const Icon(Icons.close_rounded, color: Colors.white),
+            onPressed: () {
+              if (provider.isPublishing) {
+                provider.cancelPublish();
+              }
+              Navigator.of(context).pop();
+            },
+          ),
         title: const Text('Upload Video', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16)),
         centerTitle: true,
       ),
