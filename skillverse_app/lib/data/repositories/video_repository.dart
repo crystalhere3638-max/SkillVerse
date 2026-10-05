@@ -126,19 +126,25 @@ class VideoRepository {
   /// the Videos tab has real, scrollable, playable content without
   /// needing a media backend. User-uploaded videos never use this —
   /// only the seed set does.
-  static const List<String> _sampleClipUrls = [
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4',
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
+    static const List<String> _sampleClipUrls = [
+    // Programming
+    'https://assets.mixkit.co/videos/41656/41656-360.mp4',
+    'https://assets.mixkit.co/videos/41654/41654-360.mp4',
+    'https://assets.mixkit.co/videos/41655/41655-360.mp4',
+    'https://assets.mixkit.co/videos/41658/41658-360.mp4',
+    'https://assets.mixkit.co/videos/41653/41653-360.mp4',
+    'https://assets.mixkit.co/videos/41657/41657-360.mp4',
+    'https://assets.mixkit.co/videos/41659/41659-360.mp4',
+    'https://assets.mixkit.co/videos/50811/50811-360.mp4',
+    // Fitness
+    'https://assets.mixkit.co/videos/52079/52079-360.mp4',
+    'https://assets.mixkit.co/videos/40246/40246-360.mp4',
+    'https://assets.mixkit.co/videos/52080/52080-360.mp4',
+    'https://assets.mixkit.co/videos/40788/40788-360.mp4',
+    'https://assets.mixkit.co/videos/52082/52082-360.mp4',
+    'https://assets.mixkit.co/videos/40776/40776-360.mp4',
+    'https://assets.mixkit.co/videos/40249/40249-360.mp4',
+    'https://assets.mixkit.co/videos/40159/40159-360.mp4',
   ];
 
   List<VideoPost> _mockSeed() {
