@@ -64,8 +64,8 @@ class _VideosFeedScreenState extends State<VideosFeedScreen> {
             );
           }
 
-          final videos = provider.videos;
-          if (videos.isEmpty) {
+                        final videos = provider.filteredVideos;
+              if (provider.videos.isEmpty) {
             return Center(
               child: EmptyState(
                 icon: Icons.videocam_off_outlined,
@@ -113,6 +113,52 @@ class _VideosFeedScreenState extends State<VideosFeedScreen> {
                   ),
                 ),
               ),
+                          Positioned(
+              top: MediaQuery.of(context).padding.top + 54,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      onChanged: provider.setSearchQuery,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: 'Search reels or categories',
+                        hintStyle: const TextStyle(color: Colors.white54),
+                        prefixIcon: const Icon(Icons.search, color: Colors.white54),
+                        filled: true,
+                        fillColor: Colors.black.withOpacity(0.45),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 46,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      children: [
+                        for (final c in ['All', ...provider.videos.map((v) => v.category).toSet()])
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: ChoiceChip(
+                              label: Text(c),
+                              selected: provider.categoryFilter == c,
+                              onSelected: (_) => provider.setCategoryFilter(c),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             ],
           );
         },
