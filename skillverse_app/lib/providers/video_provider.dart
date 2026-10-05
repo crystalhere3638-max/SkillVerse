@@ -34,6 +34,35 @@ class VideoProvider extends ChangeNotifier {
   bool get isPublishing => _publishing;
   double get uploadProgress => _uploadProgress;
   int get activeIndex => _activeIndex;
+    String _categoryFilter = 'All';
+  String _searchQuery = '';
+
+  String get categoryFilter => _categoryFilter;
+  String get searchQuery => _searchQuery;
+
+  List<VideoPost> get filteredVideos {
+    final q = _searchQuery.trim().toLowerCase();
+    return _videos.where((v) {
+      final catOk = _categoryFilter == 'All' ||
+          v.category.toLowerCase() == _categoryFilter.toLowerCase();
+      final qOk = q.isEmpty ||
+          v.category.toLowerCase().contains(q) ||
+          v.caption.toLowerCase().contains(q);
+      return catOk && qOk;
+    }).toList();
+  }
+
+  void setCategoryFilter(String c) {
+    _categoryFilter = c;
+    _activeIndex = 0;
+    notifyListeners();
+  }
+
+  void setSearchQuery(String q) {
+    _searchQuery = q;
+    _activeIndex = 0;
+    notifyListeners();
+  }
 
   List<VideoPost> get savedVideos =>
       (_videos.where((v) => v.savedByMe).toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
@@ -76,8 +105,8 @@ class VideoProvider extends ChangeNotifier {
     if (_activeIndex == index) return;
     _activeIndex = index;
     notifyListeners();
-    if (index >= 0 && index < _videos.length) {
-      _registerView(_videos[index].id);
+        if (index >= 0 && index < filteredVideos.length) {
+            _registerView(filteredVideos[index].id);
     }
   }
 
