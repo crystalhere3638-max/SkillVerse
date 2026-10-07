@@ -16,6 +16,7 @@ class VideosFeedScreen extends StatefulWidget {
 
 class _VideosFeedScreenState extends State<VideosFeedScreen> {
   final _pageController = PageController();
+    bool _showSearch = false;
 
   @override
   void initState() {
@@ -113,7 +114,27 @@ class _VideosFeedScreenState extends State<VideosFeedScreen> {
                   ),
                 ),
               ),
-                          Positioned(
+                                      Positioned(
+              top: MediaQuery.of(context).padding.top + 8,
+              right: 64,
+              child: GestureDetector(
+                onTap: () {
+                  final p = context.read<VideoProvider>();
+                  if (_showSearch) {
+                    p.setCategoryFilter('All');
+                    p.setSearchQuery('');
+                  }
+                  setState(() => _showSearch = !_showSearch);
+                },
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.35), shape: BoxShape.circle),
+                  child: Icon(_showSearch ? Icons.close : Icons.search, color: Colors.white, size: 22),
+                ),
+              ),
+            ),
+            if (_showSearch) Positioned(
               top: MediaQuery.of(context).padding.top + 54,
               left: 0,
               right: 0,
