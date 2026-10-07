@@ -118,14 +118,7 @@ class _VideosFeedScreenState extends State<VideosFeedScreen> {
               top: MediaQuery.of(context).padding.top + 8,
               right: 64,
               child: GestureDetector(
-                onTap: () {
-                  final p = context.read<VideoProvider>();
-                  if (_showSearch) {
-                    p.setCategoryFilter('All');
-                    p.setSearchQuery('');
-                  }
-                  setState(() => _showSearch = !_showSearch);
-                },
+                                onTap: () => setState(() => _showSearch = !_showSearch),
                 child: Container(
                   width: 38,
                   height: 38,
@@ -171,7 +164,10 @@ class _VideosFeedScreenState extends State<VideosFeedScreen> {
                             child: ChoiceChip(
                               label: Text(c),
                               selected: provider.categoryFilter == c,
-                              onSelected: (_) => provider.setCategoryFilter(c),
+                                              onSelected: (_) {
+                  provider.setCategoryFilter(c);
+                  setState(() => _showSearch = false);
+                },
                             ),
                           ),
                       ],
