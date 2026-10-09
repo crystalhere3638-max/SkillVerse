@@ -30,6 +30,7 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   bool get isAuthenticated => _status == AuthStatus.authenticated;
+    bool get isGuest => _user == null || _user!.email.isEmpty;
 
   void _init() {
     // Auto Login: react to Firebase's own persisted session instead of
