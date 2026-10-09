@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../providers/user_provider.dart';
 import '../../widgets/empty_state.dart';
+import '../../../providers/auth_provider.dart';
+import '../auth/login_screen.dart';
 import '../../widgets/level_up_celebration.dart';
 import '../competition/competition_hub_screen.dart';
 import '../create_post/create_post_screen.dart';
@@ -40,9 +42,16 @@ class _HomeShellState extends State<HomeShell> {
   /// whichever tab the user was already on — this does not change the
   /// bottom nav itself, only what tapping the center button does.
   Future<void> _openCreatePost() async {
+  final auth = context.read<AuthProvider>();
+  if (auth.status != AuthStatus.authenticated) {
     await Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => const CreatePostScreen(), fullscreenDialog: true),
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
     );
+    return;
+  }
+  await Navigator.of(context).push(
+    MaterialPageRoute(builder: (_) => const CreatePostScreen(), fullscreenDialog: true),
+  );
   }
 
   void _onTabTap(int i) {
