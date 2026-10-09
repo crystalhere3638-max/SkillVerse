@@ -43,7 +43,7 @@ class _HomeShellState extends State<HomeShell> {
   /// bottom nav itself, only what tapping the center button does.
   Future<void> _openCreatePost() async {
   final auth = context.read<AuthProvider>();
-  if (auth.status != AuthStatus.authenticated) {
+  if (auth.isGuest) {
     await Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => const LoginScreen()),
     );
