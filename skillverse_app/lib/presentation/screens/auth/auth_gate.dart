@@ -44,7 +44,7 @@ class _AuthGateState extends State<AuthGate> {
         userProvider.stop();
         _listeningUid = null;
       }
-      return const LoginScreen();
+            return const HomeShell();
     }
 
     final uid = auth.user!.uid;
