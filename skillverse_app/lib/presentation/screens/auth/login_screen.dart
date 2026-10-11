@@ -33,15 +33,23 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!_formKey.currentState!.validate()) return;
     final auth = context.read<AuthProvider>();
     final ok = await auth.signIn(email: _emailCtrl.text.trim(), password: _passCtrl.text);
-    if (!mounted) return;
-    if (!ok) AppSnackbar.error(context, auth.errorMessage ?? 'Login failed. Please try again.');
+        if (!mounted) return;
+    if (!ok) {
+      AppSnackbar.error(context, auth.errorMessage ?? 'Login failed. Please try again.');
+      return;
+    }
+    if (Navigator.of(context).canPop()) Navigator.of(context).pop();
   }
 
   Future<void> _submitGoogle() async {
     final auth = context.read<AuthProvider>();
     final ok = await auth.signInWithGoogle();
-    if (!mounted) return;
-    if (!ok) AppSnackbar.error(context, auth.errorMessage ?? 'Google sign-in failed.');
+        if (!mounted) return;
+    if (!ok) {
+      AppSnackbar.error(context, auth.errorMessage ?? 'Google sign-in failed.');
+      return;
+    }
+    if (Navigator.of(context).canPop()) Navigator.of(context).pop();
   }
 
   @override
