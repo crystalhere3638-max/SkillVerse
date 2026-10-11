@@ -58,10 +58,12 @@ class _SignupScreenState extends State<SignupScreen> {
       email: _emailCtrl.text.trim(),
       password: _passCtrl.text,
     );
-    if (!mounted) return;
+        if (!mounted) return;
     if (!ok) {
       AppSnackbar.error(context, auth.errorMessage ?? 'Sign up failed. Please try again.');
+      return;
     }
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   @override
