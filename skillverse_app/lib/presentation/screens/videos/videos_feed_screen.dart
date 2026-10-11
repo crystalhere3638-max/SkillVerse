@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../providers/video_provider.dart';
+import '../../../providers/auth_provider.dart';
+import '../auth/login_screen.dart';
 import '../../widgets/empty_state.dart';
 import 'upload_video_screen.dart';
 import 'widgets/video_feed_item.dart';
@@ -38,9 +40,14 @@ class _VideosFeedScreenState extends State<VideosFeedScreen> {
     super.dispose();
   }
 
-  void _openUpload() {
+    void _openUpload() {
+    final auth = context.read<AuthProvider>();
+    if (auth.isGuest) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
+      return;
+    }
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => const UploadVideoScreen(), fullscreenDialog: true));
-  }
+    }
 
   @override
   Widget build(BuildContext context) {
