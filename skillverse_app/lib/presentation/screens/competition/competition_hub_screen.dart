@@ -66,7 +66,7 @@ class CompetitionHubScreen extends StatelessWidget {
         _HorizontalList(competitions: weekly, onOpen: (id) => _openDetails(context, id)),
         const SizedBox(height: 28),
         _SectionHeader(title: 'Monthly Competitions', icon: Icons.calendar_month_rounded, color: AppColors.orange),
-        const SizedBox(height: 12), hu
+        const SizedBox(height: 12), 
         _HorizontalList(competitions: monthly, onOpen: (id) => _openDetails(context, id)),
       ],
     );
