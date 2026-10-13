@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../data/models/competition_model.dart';
 import '../../../providers/competition_provider.dart';
+import '../../../providers/auth_provider.dart';
+import '../auth/login_screen.dart';
 import '../../widgets/competition_card.dart';
 import '../leaderboard/leaderboard_screen.dart';
 import '../missions/daily_missions_screen.dart';
@@ -51,7 +53,7 @@ class CompetitionHubScreen extends StatelessWidget {
             competition: featured,
             large: true,
             onTap: () => _openDetails(context, featured.id),
-            onJoin: () => context.read<CompetitionProvider>().join(featured.id),
+                        onJoin: () => _joinOrLogin(context, featured.id),
           ),
           const SizedBox(height: 28),
         ],
@@ -64,7 +66,7 @@ class CompetitionHubScreen extends StatelessWidget {
         _HorizontalList(competitions: weekly, onOpen: (id) => _openDetails(context, id)),
         const SizedBox(height: 28),
         _SectionHeader(title: 'Monthly Competitions', icon: Icons.calendar_month_rounded, color: AppColors.orange),
-        const SizedBox(height: 12),
+        const SizedBox(height: 12), hu
         _HorizontalList(competitions: monthly, onOpen: (id) => _openDetails(context, id)),
       ],
     );
@@ -73,6 +75,15 @@ class CompetitionHubScreen extends StatelessWidget {
   void _openDetails(BuildContext context, String id) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => CompetitionDetailsScreen(competitionId: id)));
   }
+}
+
+void _joinOrLogin(BuildContext context, String id) {
+  final auth = context.read<AuthProvider>();
+  if (auth.isGuest) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
+    return;
+  }
+  context.read<CompetitionProvider>().join(id);
 }
 
 class _HorizontalList extends StatelessWidget {
@@ -98,7 +109,7 @@ class _HorizontalList extends StatelessWidget {
           return CompetitionCard(
             competition: c,
             onTap: () => onOpen(c.id),
-            onJoin: () => context.read<CompetitionProvider>().join(c.id),
+                        onJoin: () => _joinOrLogin(context, c.id),
           );
         },
       ),
