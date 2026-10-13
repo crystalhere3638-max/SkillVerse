@@ -22,7 +22,7 @@ jobs:
         run: |
           ls -la ~/.android/ || true
           find / -name "debug.keystore" 2>/dev/null || true
-          keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android || true
+          keytool -list -v -keystore /home/runner/.config/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android | grep -E "SHA1|SHA256" || true
       - uses: actions/upload-artifact@v4
         with:
           name: app-debug
