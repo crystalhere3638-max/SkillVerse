@@ -35,15 +35,27 @@ class VideoRepository {
 
   String? get currentUid => FirebaseAuth.instance.currentUser?.uid;
 
-  Future<List<VideoPost>> loadFeed() async {
+    Future<List<VideoPost>> loadFeed() async {
     final saved = await _localStorage.loadVideos();
-    if (saved.isNotEmpty) {
-      return saved..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    final local = saved.isNotEmpty ? saved : _mockSeed();
+    if (saved.isEmpty) await _localStorage.saveVideos(local);
+
+    List<VideoPost> remote = [];
+    try {
+      remote = await _firestoreVideos.fetchVideos();
+    } catch (_) {}
+
+    final remoteIds = remote.map((v) => v.id).toSet();
+    final merged = <VideoPost>[
+      ...remote.map((r) {
+        final match = local.where((l) => l.id == r.id);
+        return match.isNotEmpty ? match.first : r;
+      }),
+      ...local.where((l) => !remoteIds.contains(l.id)),
+    ];
+    merged.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return merged;
     }
-    final seed = _mockSeed();
-    await _localStorage.saveVideos(seed);
-    return seed;
-  }
 
   Future<void> persist(List<VideoPost> videos) => _localStorage.saveVideos(videos);
 
