@@ -96,6 +96,7 @@ class VideoProvider extends ChangeNotifier {
     _videos = _videos.where((v) => v.id != videoId).toList();
     notifyListeners();
     await _repository.persist(_videos);
+        await _repository.deleteRemoteVideo(videoId);
   }
   void cancelPublish() {
     _uploadCancelToken?.cancel();
