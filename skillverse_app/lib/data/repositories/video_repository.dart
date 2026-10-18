@@ -58,6 +58,11 @@ class VideoRepository {
     }
 
   Future<void> persist(List<VideoPost> videos) => _localStorage.saveVideos(videos);
+    Future<void> deleteRemoteVideo(String id) async {
+    try {
+      await _firestoreVideos.deleteVideo(id);
+    } catch (_) {}
+    }
 
   /// Uploads the picked video file to Storage — with real progress and
   /// automatic retry (inherited from [StorageUploadService]) — then
