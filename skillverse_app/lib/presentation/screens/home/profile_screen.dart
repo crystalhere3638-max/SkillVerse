@@ -202,6 +202,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 22),
+                    /* HIDDEN_START
           _SkillJourneyCard(level: profile?.level ?? 1),
           const SizedBox(height: 22),
           Row(
@@ -352,7 +353,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
               ],
             ),
-
+          HIDDEN_END */
           const SizedBox(height: 12),
           InkWell(
             borderRadius: BorderRadius.circular(14),
