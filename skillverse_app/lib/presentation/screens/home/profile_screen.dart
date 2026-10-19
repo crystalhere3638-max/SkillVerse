@@ -202,6 +202,15 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 22),
+                    Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _CountItem(label: 'Posts', value: '${postProvider.postsByAuthor(username).length}'),
+              _CountItem(label: 'Followers', value: '${profile?.followers ?? 0}'),
+              _CountItem(label: 'Following', value: '${profile?.following ?? 0}'),
+            ],
+          ),
+          const SizedBox(height: 12),
                     /* HIDDEN_START
           _SkillJourneyCard(level: profile?.level ?? 1),
           const SizedBox(height: 22),
@@ -506,6 +515,22 @@ class _NavTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+class _CountItem extends StatelessWidget {
+  final String label;
+  final String value;
+  const _CountItem({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.white)),
+        const SizedBox(height: 2),
+        Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+      ],
     );
   }
 }
