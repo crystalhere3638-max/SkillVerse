@@ -71,7 +71,11 @@ class UserProvider extends ChangeNotifier {
   /// a failure — that's the retry path, no separate method needed.
   Future<void> updateProfilePhoto(File localImage) async {
     final uid = _uid;
-    if (uid == null) return;
+        if (uid == null) {
+      _photoUploadError = "Please log in again to change your photo.";
+      notifyListeners();
+      return;
+        }
 
     _isUploadingPhoto = true;
     _photoUploadProgress = 0;
