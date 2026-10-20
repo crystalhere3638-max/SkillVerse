@@ -211,6 +211,18 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
+                    SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: AppColors.divider),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: const Text('Edit profile', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+            ),
+          ),
                     /* HIDDEN_START
           _SkillJourneyCard(level: profile?.level ?? 1),
           const SizedBox(height: 22),
