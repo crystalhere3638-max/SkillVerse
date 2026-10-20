@@ -93,8 +93,8 @@ class UserProvider extends ChangeNotifier {
       );
       // _profile updates on its own via the live watchUser stream
       // once Firestore's photoUrl write lands.
-    } catch (_) {
-      _photoUploadError = "Couldn't upload your photo. Check your connection and try again.";
+        } catch (e) {
+            _photoUploadError = "Couldn't upload your photo: $e";
     } finally {
       _isUploadingPhoto = false;
       notifyListeners();
