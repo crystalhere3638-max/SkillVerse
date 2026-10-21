@@ -173,8 +173,11 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           const Icon(Icons.error_outline_rounded, size: 13, color: AppColors.error),
                           const SizedBox(width: 4),
-                          const Text('Upload failed — tap to retry',
-                              style: TextStyle(fontSize: 11, color: AppColors.error, fontWeight: FontWeight.w600)),
+                                                Flexible(
+                        child: Text('${userProvider.photoUploadError}',
+                            maxLines: 6,
+                            style: const TextStyle(fontSize: 11, color: AppColors.error, fontWeight: FontWeight.w600)),
+                      ),
                         ],
                       ),
                     ),
