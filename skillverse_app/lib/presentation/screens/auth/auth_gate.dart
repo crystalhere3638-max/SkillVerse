@@ -48,7 +48,7 @@ class _AuthGateState extends State<AuthGate> {
     }
 
     final uid = auth.user!.uid;
-    if (_listeningUid != uid) {
+        if (_listeningUid != uid || userProvider.profile == null) {
       _listeningUid = uid;
       WidgetsBinding.instance.addPostFrameCallback((_) => userProvider.listenTo(uid));
     }
