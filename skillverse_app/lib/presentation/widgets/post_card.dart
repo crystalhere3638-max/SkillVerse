@@ -12,6 +12,7 @@ import '../../core/utils/time_ago.dart';
 import '../../data/models/post_model.dart';
 import '../../providers/post_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../providers/auth_provider.dart';
 import '../../data/services/firestore_post_service.dart';
 import 'comment_sheet.dart';
 import 'double_tap_like.dart';
@@ -143,8 +144,8 @@ import 'video/feed_video_player.dart';
               Row(
                 children: [
                   Builder(builder: (context) {
-  final me = context.watch<UserProvider>().profile;
-  final myPhoto = (me != null && me.uid == current.authorId) ? me.photoUrl : null;
+  final me = context.watch<UserProvider>().profile ?? context.watch<AuthProvider>().user;
+  final myPhoto = (me != null && (me.uid == current.authorId || current.authorId == FirebaseAuth.instance.currentUser?.uid)) ? me.photoUrl : null;
   final initial = Text(
     current.authorName.isNotEmpty ? current.authorName[0].toUpperCase() : '?',
     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.black),
