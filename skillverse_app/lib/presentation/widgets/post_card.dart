@@ -11,6 +11,7 @@ import '../../core/utils/media_source.dart';
 import '../../core/utils/time_ago.dart';
 import '../../data/models/post_model.dart';
 import '../../providers/post_provider.dart';
+import '../../providers/user_provider.dart';
 import '../../data/services/firestore_post_service.dart';
 import 'comment_sheet.dart';
 import 'double_tap_like.dart';
@@ -141,17 +142,23 @@ import 'video/feed_video_player.dart';
             children: [
               Row(
                 children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
-                    child: Center(
-                      child: Text(
-                        current.authorName.isNotEmpty ? current.authorName[0].toUpperCase() : '?',
-                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.black),
-                      ),
-                    ),
-                  ),
+                  Builder(builder: (context) {
+  final me = context.watch<UserProvider>().profile;
+  final myPhoto = (me != null && me.uid == current.authorId) ? me.photoUrl : null;
+  final initial = Text(
+    current.authorName.isNotEmpty ? current.authorName[0].toUpperCase() : '?',
+    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.black),
+  );
+  return Container(
+    width: 40,
+    height: 40,
+    clipBehavior: Clip.antiAlias,
+    decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
+    child: (myPhoto != null && myPhoto.isNotEmpty)
+        ? Image.network(myPhoto, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Center(child: initial))
+        : Center(child: initial),
+  );
+}),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
