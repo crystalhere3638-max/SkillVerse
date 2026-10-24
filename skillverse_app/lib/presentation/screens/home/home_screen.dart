@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+jimport 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/theme/app_colors.dart';
@@ -224,16 +224,28 @@ class _Header extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
+            Container(
                 width: 46,
                 height: 46,
+                clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
-                child: Center(
-                  child: Text(
-                    username.isNotEmpty ? username[0].toUpperCase() : '?',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.black),
-                  ),
-                ),
+                child: (profile?.photoUrl != null && profile!.photoUrl!.isNotEmpty)
+                    ? Image.network(
+                        profile!.photoUrl!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Center(
+                          child: Text(
+                            username.isNotEmpty ? username[0].toUpperCase() : '?',
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.black),
+                          ),
+                        ),
+                      )
+                    : Center(
+                        child: Text(
+                          username.isNotEmpty ? username[0].toUpperCase() : '?',
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.black),
+                        ),
+                      ),
               ),
               const SizedBox(width: 12),
               Expanded(
