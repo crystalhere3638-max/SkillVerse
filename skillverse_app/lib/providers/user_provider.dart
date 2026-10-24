@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../data/models/app_user.dart';
@@ -70,7 +71,7 @@ class UserProvider extends ChangeNotifier {
   /// Uploads and links a new profile photo. Safe to call again after
   /// a failure — that's the retry path, no separate method needed.
   Future<void> updateProfilePhoto(File localImage) async {
-    final uid = _uid;
+    final uid = _uid ?? FirebaseAuth.instance.currentUser?.uid;
         if (uid == null) {
       _photoUploadError = "Please log in again to change your photo.";
       notifyListeners();
