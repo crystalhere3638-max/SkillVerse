@@ -8,6 +8,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/time_ago.dart';
 import '../../../../data/models/video_post_model.dart';
 import '../../../../providers/video_provider.dart';
+import '../../../../providers/user_provider.dart';
 import '../../../widgets/double_tap_like.dart';
 import '../../../widgets/share_sheet.dart';
 import 'video_comment_sheet.dart';
@@ -222,17 +223,23 @@ class _VideoFeedItemState extends State<VideoFeedItem> {
                   ],
                   Row(
                     children: [
-                      Container(
-                        width: 26,
-                        height: 26,
-                        decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
-                        child: Center(
-                          child: Text(
-                            video.authorName.isNotEmpty ? video.authorName[0].toUpperCase() : '?',
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: Colors.black),
-                          ),
-                        ),
-                      ),
+                      Builder(builder: (context) {
+  final me = context.watch<UserProvider>().profile;
+  final myPhoto = (me != null && video.authorId == FirebaseAuth.instance.currentUser?.uid) ? me.photoUrl : null;
+  final initial = Text(
+    video.authorName.isNotEmpty ? video.authorName[0].toUpperCase() : '?',
+    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: Colors.black),
+  );
+  return Container(
+    width: 26,
+    height: 26,
+    clipBehavior: Clip.antiAlias,
+    decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
+    child: (myPhoto != null && myPhoto.isNotEmpty)
+        ? Image.network(myPhoto, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Center(child: initial))
+        : Center(child: initial),
+  );
+}),
                       const SizedBox(width: 8),
                       Flexible(
                         child: Text('${video.authorName} · ${video.authorLevel}',
