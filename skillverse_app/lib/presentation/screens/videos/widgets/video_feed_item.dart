@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
@@ -231,14 +232,23 @@ class _VideoFeedItemState extends State<VideoFeedItem> {
     video.authorName.isNotEmpty ? video.authorName[0].toUpperCase() : '?',
     style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: Colors.black),
   );
-  return Container(
-    width: 26,
-    height: 26,
-    clipBehavior: Clip.antiAlias,
-    decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
-    child: (myPhoto != null && myPhoto.isNotEmpty)
-        ? Image.network(myPhoto, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Center(child: initial))
-        : Center(child: initial),
+  return StreamBuilder(
+    stream: video.authorId.isEmpty
+        ? null
+        : FirebaseFirestore.instance.collection('publicProfiles').doc(video.authorId).snapshots(),
+    builder: (context, snap) {
+      final pub = snap.data?.data()?['photoUrl'];
+      final String? photo = (pub is String && pub.isNotEmpty) ? pub : myPhoto;
+      return Container(
+        width: 26,
+        height: 26,
+        clipBehavior: Clip.antiAlias,
+        decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
+        child: (photo != null && photo.isNotEmpty)
+            ? Image.network(photo, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Center(child: initial))
+            : Center(child: initial),
+      );
+    },
   );
 }),
                       const SizedBox(width: 8),
