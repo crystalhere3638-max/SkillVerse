@@ -52,7 +52,11 @@ class FirestoreUserService {
     return _users.doc(uid).update(fields);
   }
 
-  Future<void> updatePhotoUrl(String uid, String photoUrl) {
-    return _users.doc(uid).update({'photoUrl': photoUrl});
-  }
+    Future<void> updatePhotoUrl(String uid, String photoUrl) async {
+    await _users.doc(uid).update({'photoUrl': photoUrl});
+    await _db.collection('publicProfiles').doc(uid).set(
+      {'uid': uid, 'photoUrl': photoUrl},
+      SetOptions(merge: true),
+    );
+    }
 }
