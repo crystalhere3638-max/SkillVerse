@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
@@ -9,6 +9,7 @@ import '../../../../core/utils/time_ago.dart';
 import '../../../../data/models/video_post_model.dart';
 import '../../../../providers/video_provider.dart';
 import '../../../../providers/user_provider.dart';
+import '../../../../providers/auth_provider.dart';
 import '../../../widgets/double_tap_like.dart';
 import '../../../widgets/share_sheet.dart';
 import 'video_comment_sheet.dart';
@@ -224,7 +225,7 @@ class _VideoFeedItemState extends State<VideoFeedItem> {
                   Row(
                     children: [
                       Builder(builder: (context) {
-  final me = context.watch<UserProvider>().profile;
+  final me = context.watch<UserProvider>().profile ?? context.watch<AuthProvider>().user;
   final myPhoto = (me != null && video.authorId == FirebaseAuth.instance.currentUser?.uid) ? me.photoUrl : null;
   final initial = Text(
     video.authorName.isNotEmpty ? video.authorName[0].toUpperCase() : '?',
