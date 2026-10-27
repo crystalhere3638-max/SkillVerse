@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -150,14 +151,23 @@ import 'video/feed_video_player.dart';
     current.authorName.isNotEmpty ? current.authorName[0].toUpperCase() : '?',
     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.black),
   );
-  return Container(
-    width: 40,
-    height: 40,
-    clipBehavior: Clip.antiAlias,
-    decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
-    child: (myPhoto != null && myPhoto.isNotEmpty)
-        ? Image.network(myPhoto, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Center(child: initial))
-        : Center(child: initial),
+  return StreamBuilder(
+    stream: current.authorId.isEmpty
+        ? null
+        : FirebaseFirestore.instance.collection('publicProfiles').doc(current.authorId).snapshots(),
+    builder: (context, snap) {
+      final pub = snap.data?.data()?['photoUrl'];
+      final String? photo = (pub is String && pub.isNotEmpty) ? pub : myPhoto;
+      return Container(
+        width: 40,
+        height: 40,
+        clipBehavior: Clip.antiAlias,
+        decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
+        child: (photo != null && photo.isNotEmpty)
+            ? Image.network(photo, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Center(child: initial))
+            : Center(child: initial),
+      );
+    },
   );
 }),
                   const SizedBox(width: 10),
