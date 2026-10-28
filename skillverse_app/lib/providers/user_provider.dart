@@ -45,12 +45,32 @@ class UserProvider extends ChangeNotifier {
     _pendingLevelUp = null;
   }
 
+    String? _syncedPhotoUrl;
+
+  /// Copies the user's photo into publicProfiles so other users
+  /// and guests can see it. Runs only when the photo changes.
+  Future<void> _syncPublicPhoto(AppUser? p) async {
+    final url = p?.photoUrl;
+    if (p == null || url == null || url.isEmpty) return;
+    if (_syncedPhotoUrl == url) return;
+    _syncedPhotoUrl = url;
+    try {
+      await FirebaseFirestore.instance
+          .collection('publicProfiles')
+          .doc(p.uid)
+          .set({'uid': p.uid, 'photoUrl': url});
+    } catch (e) {
+      _syncedPhotoUrl = null;
+    }
+  }
+
   void listenTo(String uid) {
     _uid = uid;
     _sub?.cancel();
     _sub = _userRepository.watchUser(uid).listen((profile) {
       final previousLevel = _lastSeenLevel;
       _profile = profile;
+            _syncPublicPhoto(profile);
       if (profile != null) {
         if (previousLevel != null && profile.level > previousLevel) {
           _pendingLevelUp = profile.level;
