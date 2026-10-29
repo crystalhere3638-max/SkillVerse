@@ -189,7 +189,6 @@ class ProfileScreen extends StatelessWidget {
                 LevelTitleBadge.fromLevel(profile?.level ?? 1),
                 const SizedBox(height: 2),
                 Text(profile?.email ?? '', style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
-                Text('dbg ${profile?.photoUrl?.split('/').last}', style: const TextStyle(fontSize: 11, color: Colors.white)),
                 if (profile?.mainCategory != null) ...[
                   const SizedBox(height: 12),
                   Container(
