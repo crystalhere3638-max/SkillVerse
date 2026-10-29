@@ -232,6 +232,7 @@ class _Header extends StatelessWidget {
                 child: (profile?.photoUrl != null && profile!.photoUrl!.isNotEmpty)
                     ? Image.network(
                         profile!.photoUrl!,
+                      key: ValueKey(profile!.photoUrl),
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) => Center(
                           child: Text(
