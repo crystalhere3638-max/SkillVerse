@@ -116,6 +116,7 @@ class ProfileScreen extends StatelessWidget {
                               child: (profile?.photoUrl != null && profile!.photoUrl!.isNotEmpty)
                                   ? Image.network(
                                       profile.photoUrl!,
+                                    key: ValueKey(profile.photoUrl),
                                       fit: BoxFit.cover,
                                       width: 84,
                                       height: 84,
