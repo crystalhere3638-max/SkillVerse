@@ -2,6 +2,7 @@ import '../../../data/models/activity_model.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 import 'package:provider/provider.dart';
 
 import '../../../core/theme/app_colors.dart';
@@ -113,18 +114,26 @@ class ProfileScreen extends StatelessWidget {
                               height: 84,
                               clipBehavior: Clip.antiAlias,
                               decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
-                              child: (profile?.photoUrl != null && profile!.photoUrl!.isNotEmpty)
-                                  ? Image.network(
-                                      profile.photoUrl!,
-                                    key: ValueKey(profile.photoUrl),
-                                      fit: BoxFit.cover,
-                                      width: 84,
-                                      height: 84,
-                                      errorBuilder: (_, __, ___) => _initialAvatar(username),
-                                      loadingBuilder: (context, child, progress) =>
-                                          progress == null ? child : _initialAvatar(username),
-                                    )
-                                  : _initialAvatar(username),
+                              child: StreamBuilder(
+  stream: (profile == null || profile.uid.isEmpty)
+      ? null
+      : FirebaseFirestore.instance.collection('publicProfiles').doc(profile.uid).snapshots(),
+  builder: (context, snap) {
+    final pub = snap.data?.data()?['photoUrl'];
+    final String? photo = (pub is String && pub.isNotEmpty) ? pub : profile?.photoUrl;
+    if (photo == null || photo.isEmpty) return _initialAvatar(username);
+    return Image.network(
+      photo,
+      key: ValueKey(photo),
+      fit: BoxFit.cover,
+      width: 84,
+      height: 84,
+      errorBuilder: (_, __, ___) => _initialAvatar(username),
+      loadingBuilder: (context, child, progress) =>
+          progress == null ? child : _initialAvatar(username),
+    );
+  },
+),
                             ),
                           ),
                         ),
