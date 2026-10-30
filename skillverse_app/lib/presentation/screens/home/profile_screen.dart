@@ -124,13 +124,12 @@ class ProfileScreen extends StatelessWidget {
     if (photo == null || photo.isEmpty) return _initialAvatar(username);
     return Image.network(
       photo,
-      key: ValueKey(photo),
       fit: BoxFit.cover,
       width: 84,
       height: 84,
+      gaplessPlayback: true,
       errorBuilder: (_, __, ___) => _initialAvatar(username),
-      loadingBuilder: (context, child, progress) =>
-          progress == null ? child : _initialAvatar(username),
+      
     );
   },
 ),
