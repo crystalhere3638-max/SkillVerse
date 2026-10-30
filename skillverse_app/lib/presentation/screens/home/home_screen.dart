@@ -245,8 +245,8 @@ class _Header extends StatelessWidget {
     if (photo == null || photo.isEmpty) return initial;
     return Image.network(
       photo,
-      key: ValueKey(photo),
       fit: BoxFit.cover,
+      gaplessPlayback: true,
       errorBuilder: (_, __, ___) => initial,
     );
   },
