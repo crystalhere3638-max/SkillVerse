@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/page_transitions.dart';
 import '../../../core/utils/skill_level_engine.dart';
@@ -229,24 +229,28 @@ class _Header extends StatelessWidget {
                 height: 46,
                 clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(gradient: AppColors.primaryGradient, shape: BoxShape.circle),
-                child: (profile?.photoUrl != null && profile!.photoUrl!.isNotEmpty)
-                    ? Image.network(
-                        profile!.photoUrl!,
-                      key: ValueKey(profile!.photoUrl),
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Center(
-                          child: Text(
-                            username.isNotEmpty ? username[0].toUpperCase() : '?',
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.black),
-                          ),
-                        ),
-                      )
-                    : Center(
-                        child: Text(
-                          username.isNotEmpty ? username[0].toUpperCase() : '?',
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.black),
-                        ),
-                      ),
+                child: StreamBuilder(
+  stream: (profile == null || profile!.uid.isEmpty)
+      ? null
+      : FirebaseFirestore.instance.collection('publicProfiles').doc(profile!.uid).snapshots(),
+  builder: (context, snap) {
+    final pub = snap.data?.data()?['photoUrl'];
+    final String? photo = (pub is String && pub.isNotEmpty) ? pub : profile?.photoUrl;
+    final initial = Center(
+      child: Text(
+        username.isNotEmpty ? username[0].toUpperCase() : '?',
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.black),
+      ),
+    );
+    if (photo == null || photo.isEmpty) return initial;
+    return Image.network(
+      photo,
+      key: ValueKey(photo),
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => initial,
+    );
+  },
+),
               ),
               const SizedBox(width: 12),
               Expanded(
