@@ -21,7 +21,7 @@ import '../profile/liked_posts_screen.dart';
 import '../profile/recent_activity_screen.dart';
 import '../profile/saved_posts_screen.dart';
 import '../settings/settings_screen.dart';
-
+import '../auth/login_screen.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -390,7 +390,15 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(height: 12),
           InkWell(
             borderRadius: BorderRadius.circular(14),
-            onTap: auth.isLoading ? null : () => _confirmSignOut(context),
+            onTap: auth.isLoading
+    ? null
+    : () {
+        if (auth.user == null) {
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
+        } else {
+          _confirmSignOut(context);
+        }
+      },
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -403,7 +411,7 @@ class ProfileScreen extends StatelessWidget {
                   const Icon(Icons.logout_rounded, color: AppColors.error, size: 18),
                   const SizedBox(width: 12),
                   Text(
-                    auth.isLoading ? 'Signing out…' : 'Sign Out',
+                    auth.isLoading ? 'Signing out…' : (auth.user == null ? 'Login' : 'Sign Out'),
                     style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.error),
                   ),
                 ],
