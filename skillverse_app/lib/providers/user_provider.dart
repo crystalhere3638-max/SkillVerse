@@ -126,6 +126,8 @@ class UserProvider extends ChangeNotifier {
     final uid = _uid ?? FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
     await _userRepository.updateUsername(uid, username);
+        _profile = _profile?.copyWith(username: username);
+    notifyListeners();
   }
   void dismissPhotoUploadError() {
     _photoUploadError = null;
