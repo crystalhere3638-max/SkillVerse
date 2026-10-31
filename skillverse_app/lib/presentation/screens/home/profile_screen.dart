@@ -227,7 +227,7 @@ class ProfileScreen extends StatelessWidget {
                     SizedBox(
             width: double.infinity,
             child: OutlinedButton(
-                    onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const EditProfileScreen())),
+                          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => auth.user == null ? const LoginScreen() : const EditProfileScreen())),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.divider),
                 padding: const EdgeInsets.symmetric(vertical: 12),
