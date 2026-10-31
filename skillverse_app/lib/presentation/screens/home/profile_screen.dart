@@ -22,6 +22,7 @@ import '../profile/recent_activity_screen.dart';
 import '../profile/saved_posts_screen.dart';
 import '../settings/settings_screen.dart';
 import '../auth/login_screen.dart';
+import 'edit_profile_screen.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -226,7 +227,7 @@ class ProfileScreen extends StatelessWidget {
                     SizedBox(
             width: double.infinity,
             child: OutlinedButton(
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
+                    onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const EditProfileScreen())),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.divider),
                 padding: const EdgeInsets.symmetric(vertical: 12),
