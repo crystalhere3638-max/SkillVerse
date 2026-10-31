@@ -122,7 +122,11 @@ class UserProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
+  Future<void> updateUsername(String username) async {
+    final uid = _uid ?? FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+    await _userRepository.updateUsername(uid, username);
+  }
   void dismissPhotoUploadError() {
     _photoUploadError = null;
     notifyListeners();
