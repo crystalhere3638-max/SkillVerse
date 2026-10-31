@@ -17,7 +17,7 @@ class UserRepository {
         _storage = storage ?? StorageUploadService();
 
   Future<AppUser?> getUser(String uid) => _userService.getUser(uid);
-
+  Future<void> updateUsername(String uid, String username) => _userService.updateProfile(uid, {'username': username});
   Stream<AppUser?> watchUser(String uid) => _userService.watchUser(uid);
 
   Future<void> completeOnboarding({
