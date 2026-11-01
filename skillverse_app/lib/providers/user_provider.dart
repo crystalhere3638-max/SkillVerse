@@ -58,7 +58,7 @@ class UserProvider extends ChangeNotifier {
       await FirebaseFirestore.instance
           .collection('publicProfiles')
           .doc(p.uid)
-          .set({'uid': p.uid, 'photoUrl': url});
+                    .set({'uid': p.uid, 'photoUrl': url}, SetOptions(merge: true));
     } catch (e) {
       _syncedPhotoUrl = null;
     }
@@ -126,6 +126,10 @@ class UserProvider extends ChangeNotifier {
     final uid = _uid ?? FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
     await _userRepository.updateUsername(uid, username);
+        await FirebaseFirestore.instance
+        .collection('publicProfiles')
+        .doc(uid)
+        .set({'uid': uid, 'username': username}, SetOptions(merge: true));
         _profile = _profile?.copyWith(username: username);
     notifyListeners();
   }
