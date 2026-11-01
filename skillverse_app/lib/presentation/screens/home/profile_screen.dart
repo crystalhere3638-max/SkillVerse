@@ -193,7 +193,16 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 const SizedBox(height: 14),
-                Text(username, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Colors.white)),
+                                StreamBuilder(
+                  stream: (profile == null || profile.uid.isEmpty)
+                      ? null
+                      : FirebaseFirestore.instance.collection('publicProfiles').doc(profile.uid).snapshots(),
+                  builder: (context, snap) {
+                    final pubName = snap.data?.data()?['username'];
+                    final String shownName = (pubName is String && pubName.isNotEmpty) ? pubName : username;
+                    return Text(shownName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Colors.white));
+                  },
+                ),
                 const SizedBox(height: 8),
                 LevelTitleBadge.fromLevel(profile?.level ?? 1),
                 const SizedBox(height: 2),
