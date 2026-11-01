@@ -259,10 +259,19 @@ class _Header extends StatelessWidget {
                   children: [
                     const Text('Welcome back 👋', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                     const SizedBox(height: 2),
-                    Text(username,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.white, letterSpacing: -0.2)),
+                                        StreamBuilder(
+                      stream: (profile == null || profile!.uid.isEmpty)
+                          ? null
+                          : FirebaseFirestore.instance.collection('publicProfiles').doc(profile!.uid).snapshots(),
+                      builder: (context, snap) {
+                        final pubName = snap.data?.data()?['username'];
+                        final String shownName = (pubName is String && pubName.isNotEmpty) ? pubName : username;
+                        return Text(shownName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.white, letterSpacing: -0.2));
+                      },
+                    ),
                     const SizedBox(height: 6),
                     GestureDetector(
                       onTap: () => Navigator.of(context).push(
