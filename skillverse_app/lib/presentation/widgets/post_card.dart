@@ -175,9 +175,18 @@ import 'video/feed_video_player.dart';
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(current.authorName,
-                            maxLines: 1, overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Colors.white)),
+                                                StreamBuilder(
+                          stream: current.authorId.isEmpty
+                              ? null
+                              : FirebaseFirestore.instance.collection('publicProfiles').doc(current.authorId).snapshots(),
+                          builder: (context, snap) {
+                            final pubName = snap.data?.data()?['username'];
+                            final String shownName = (pubName is String && pubName.isNotEmpty) ? pubName : current.authorName;
+                            return Text(shownName,
+                                maxLines: 1, overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Colors.white));
+                          },
+                        ),
                         const SizedBox(height: 4),
                         Row(
                           children: [
