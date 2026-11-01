@@ -253,9 +253,18 @@ class _VideoFeedItemState extends State<VideoFeedItem> {
 }),
                       const SizedBox(width: 8),
                       Flexible(
-                        child: Text('${video.authorName} · ${video.authorLevel}',
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: Colors.white)),
+                                                child: StreamBuilder(
+                          stream: video.authorId.isEmpty
+                              ? null
+                              : FirebaseFirestore.instance.collection('publicProfiles').doc(video.authorId).snapshots(),
+                          builder: (context, snap) {
+                            final pubName = snap.data?.data()?['username'];
+                            final String shownName = (pubName is String && pubName.isNotEmpty) ? pubName : video.authorName;
+                            return Text('$shownName · ${video.authorLevel}',
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: Colors.white));
+                          },
+                        ),
                       ),
                     ],
                   ),
