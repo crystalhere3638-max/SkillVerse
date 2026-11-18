@@ -68,6 +68,7 @@ class PostProvider extends ChangeNotifier {
       (_allPosts.where((p) => p.likedByMe).toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
 
   List<Post> postsByAuthor(String authorName) => _allPosts.where((p) => p.authorName == authorName).toList();
+    List<Post> postsByAuthorId(String uid) => _allPosts.where((p) => p.authorId == uid).toList();
 
   int commentsMadeBy(String authorName) =>
       _allPosts.expand((p) => p.comments).where((c) => c.authorName == authorName).length;
