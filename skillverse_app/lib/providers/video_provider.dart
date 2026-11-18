@@ -66,6 +66,7 @@ class VideoProvider extends ChangeNotifier {
 
   List<VideoPost> get savedVideos =>
       (_videos.where((v) => v.savedByMe).toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
+    List<VideoPost> videosByAuthorId(String uid) => _videos.where((v) => v.authorId == uid).toList();
 
   VideoPost? videoById(String id) {
     for (final v in _videos) {
