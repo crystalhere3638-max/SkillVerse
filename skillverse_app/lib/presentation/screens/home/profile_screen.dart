@@ -228,7 +228,7 @@ class ProfileScreen extends StatelessWidget {
                     Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _CountItem(label: 'Posts', value: '${postProvider.postsByAuthor(username).length}'),
+                            _CountItem(label: 'Posts', value: '${postProvider.postsByAuthorId(profile?.uid ?? '').length}'),
               _CountItem(label: 'Followers', value: '${profile?.followers ?? 0}'),
               _CountItem(label: 'Following', value: '${profile?.following ?? 0}'),
             ],
